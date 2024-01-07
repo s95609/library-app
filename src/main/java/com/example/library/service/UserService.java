@@ -35,11 +35,17 @@ public class UserService implements UserDetailsService {
     }
 
     public User registerUser(UserRequest userRequest) {
-
+        Role role;
+        try {
+            role = Role.valueOf(userRequest.getRole().toUpperCase());
+        }
+        catch (IllegalArgumentException e) {
+            role = Role.USER;
+        }
         User user = User.builder()
                 .username(userRequest.getUsername())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
-                .role(Role.USER)
+                .role(role)
                 .build();
         createUser(user);
         return user;

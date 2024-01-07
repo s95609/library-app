@@ -1,5 +1,7 @@
 package com.example.library.config;
 
+import com.example.library.model.User;
+import com.example.library.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,12 +13,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+
+    private final UserRepository userRepository;
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
@@ -56,9 +64,12 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
+        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Email not found"));
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
+                .addClaims(Map.of("userId", user.getId()))
+                .addClaims(Map.of("role", user.getRole().name()))
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
