@@ -21,6 +21,9 @@ public class BookGenreService {
     }
 
     public BookGenre createBookGenre(BookGenreRequest bookGenreRequest) {
+        if (bookGenreRequest.getName() == null || bookGenreRequest.getName().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Genre name cannot be null or empty");
+        }
         BookGenre bookGenre = BookGenre.builder()
                 .name(bookGenreRequest.getName())
                 .build();
