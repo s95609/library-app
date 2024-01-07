@@ -27,6 +27,12 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    @ManyToMany
+    @JoinTable(
+            name = "user_book",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    List<Book> rentedBooks;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

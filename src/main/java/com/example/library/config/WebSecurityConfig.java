@@ -35,6 +35,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers(WHITE_LIST_URL).permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST).hasAuthority(Role.ADMIN.name()))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/rent/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name()))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT).hasAuthority(Role.ADMIN.name()))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE).hasAuthority(Role.ADMIN.name()))
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
