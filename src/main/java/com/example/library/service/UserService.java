@@ -35,12 +35,9 @@ public class UserService implements UserDetailsService {
     }
 
     public User registerUser(UserRequest userRequest) {
-        Role role;
-        try {
+        Role role = Role.USER;
+        if (userRequest.getRole() != null && !userRequest.getRole().isEmpty()) {
             role = Role.valueOf(userRequest.getRole().toUpperCase());
-        }
-        catch (IllegalArgumentException e) {
-            role = Role.USER;
         }
         User user = User.builder()
                 .username(userRequest.getUsername())
