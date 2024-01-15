@@ -43,6 +43,18 @@ public class BookRentService {
         return user.getRentedBooks();
     }
 
+    public void addRentedBookForUsername(Integer bookId, String username) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        user.getRentedBooks().add(book);
+        book.setQuantity(book.getQuantity()-1);
+
+        userRepository.save(user);
+        bookRepository.save(book);
+    }
+
     public List<Book> deleteRentedBookFromUser(Integer bookId, String token) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
@@ -56,5 +68,17 @@ public class BookRentService {
         bookRepository.save(book);
 
         return user.getRentedBooks();
+    }
+
+    public void deleteRentedBookFromUsername(Integer bookId, String username) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        user.getRentedBooks().remove(book);
+        book.setQuantity(book.getQuantity()+1);
+
+        userRepository.save(user);
+        bookRepository.save(book);
     }
 }

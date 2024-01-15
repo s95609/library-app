@@ -41,4 +41,9 @@ public class BookService {
         bookRepository.delete(book);
         return book;
     }
+
+    public Book getBookById(Integer bookId) {
+        return bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+    }
 }
