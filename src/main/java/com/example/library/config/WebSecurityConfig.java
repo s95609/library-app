@@ -44,21 +44,20 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PUT).hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE).hasAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated())
-                .formLogin(login -> login
-                                .loginPage("/loginpage")
-                                .permitAll()
-                                .usernameParameter("username")
-                                .passwordParameter("password")
-                                .loginProcessingUrl("/login")
-                                .failureUrl("/login-error")
-                                .defaultSuccessUrl("/", true)
-                )
+//                .formLogin(login -> login
+//                                .loginPage("/loginpage")
+//                                .permitAll()
+//                                .usernameParameter("username")
+//                                .passwordParameter("password")
+//                                .loginProcessingUrl("/login")
+//                                .failureUrl("/login-error")
+//                                .defaultSuccessUrl("/", true)
+//                )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(AbstractHttpConfigurer::disable)
-//                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-//                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 }
