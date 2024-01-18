@@ -4,11 +4,11 @@ import com.example.library.dto.UserRequest;
 import com.example.library.model.User;
 import com.example.library.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 @AllArgsConstructor
 public class RegisterController {
     private UserService userService;
@@ -19,7 +19,7 @@ public class RegisterController {
     }
 
     @PostMapping("/login")
-    public String authenticateUser(@RequestBody UserRequest loginRequest){
-        return userService.authenticateUser(loginRequest);
+    public ResponseEntity<String> authenticateUser(@RequestBody UserRequest loginRequest){
+        return ResponseEntity.ok().body(userService.authenticateUser(loginRequest));
     }
 }

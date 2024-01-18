@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Library App</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container text-center">
+    <h1>Register page</h1>
+    <form th:action="@{/register}" method="POST" th:object="${user}">
+        <div class="form-group">
+            <label for="username">Username</label>:
+            <input pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" class="form-control" type="text" id="username" th:field="*{username}" /> <br />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>:
+            <input minlength="8" class="form-control" type="password" id="password" th:field="*{password}" /> <br />
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <div>
+        <p>Already have an account? <a th:href="@{/login}">Log in</a></p>
+    </div>
+</div>
+</body>
+</html>
