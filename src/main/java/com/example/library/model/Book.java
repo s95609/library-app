@@ -24,7 +24,7 @@ public class Book {
     private String name;
     @Range(min = 0)
     private Integer quantity;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "genre_id",
     referencedColumnName = "id")
     private BookGenre genre;

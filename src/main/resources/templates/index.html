@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--<html xmlns:th="http://www.thymeleaf.org">-->
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <title>Library App</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -27,6 +27,8 @@
             <th>Quantity</th>
             <th>Genre</th>
             <th></th>
+            <th th:if="${user.role.name()} == 'ADMIN'"></th>
+            <th th:if="${user.role.name()} == 'ADMIN'"></th>
         </tr>
         <tr th:each="book: ${books}">
             <td th:text="${book.name}"/>
@@ -37,8 +39,20 @@
                 <button type="button" class="btn btn-primary" th:disabled="${book.quantity <= 0}">Rent Book</button>
                 </a>
             </td>
+
+            <td th:if="${user.role.name()} == 'ADMIN'">
+                <a th:href="@{/edit?bookId={id}(id=${book.id})}">
+                    <button type="button" class="btn btn-warning">Edit Book</button>
+                </a>
+            </td>
+            <td th:if="${user.role.name()} == 'ADMIN'">
+            <a th:href="@{/delete?bookId={id}(id=${book.id})}">
+                <button type="button" class="btn btn-danger">Delete Book</button>
+            </a>
+        </td>
         </tr>
     </table>
+<!--    [[${user.role}]]-->
 </div>
 </body>
 </html>

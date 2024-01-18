@@ -26,6 +26,10 @@ public class WebController {
 
     @GetMapping("/")
     public String displayHomePage(Model model) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = (User) userService.loadUserByUsername(username);
+
+        model.addAttribute("user", user);
         model.addAttribute("books", bookService.getAllBooks());
         return "index";
     }
@@ -62,5 +66,27 @@ public class WebController {
         model.addAttribute("user", user);
 
         return "redirect:/profile";
+    }
+
+    @GetMapping("/delete")
+    public String deleteBook(@RequestParam Integer bookId, Model model) {
+        bookService.deleteBook(bookId);
+
+        model.addAttribute("books", bookService.getAllBooks());
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit")
+    public String displayEditView(@RequestParam Integer bookId, Model model) {
+        model.addAttribute("book", bookService.getBookById(bookId));
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String editBook(@ModelAttribute Book book, Model model) {
+        bookService.editBook(book);
+
+        model.addAttribute("books", bookService.getAllBooks());
+        return "redirect:/";
     }
 }

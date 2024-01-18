@@ -46,4 +46,13 @@ public class BookService {
         return bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
     }
+
+    public void editBook(Book editedBook) {
+        Book book = bookRepository.findById(editedBook.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+        book.setName(editedBook.getName());
+        book.setQuantity(editedBook.getQuantity());
+
+        bookRepository.save(book);
+    }
 }
